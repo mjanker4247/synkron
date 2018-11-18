@@ -182,8 +182,8 @@ void SyncPage::analyseFolders()
         if (actions.at(f)->isChecked()) {
             for (int l = 0; l < mp_parent->filter_list->count(); ++l) {
                 if (mp_parent->filter_list->item(l)->text() == actions.at(f)->text()) {
-                    for (int e = 0; e < ((Filter *)mp_parent->filter_list->item(l))->extensions.count(); ++e) {
-                        extensions << QString("*%1").arg(((Filter *)mp_parent->filter_list->item(l))->extensions.at(e));
+                    for (int e = 0; e < ( static_cast<Filter *> (mp_parent->filter_list->item(l)))->extensions.count(); ++e) {
+                        extensions << QString("*%1").arg(( static_cast<Filter *> (mp_parent->filter_list->item(l)))->extensions.at(e));
                     } break;
                 }
             }
@@ -256,7 +256,7 @@ bool AbstractSyncPage::subAnalyse(const MTStringSet & folders_set, QTreeWidgetIt
     }
 
     bool special = false;
-    QTreeWidgetItem * child_item = 0;
+    QTreeWidgetItem * child_item = nullptr;
     MTFileInfo * file_info = new MTFileInfo;
     QStringList s_folders_list = currentSyncFoldersList();
     for (int n = 0; n < file_names.count(); ++n) {
@@ -485,7 +485,7 @@ void SyncPage::createChildItemsByFolder(QString name, QStringList keys, QStringL
                     to = n;
                 }
             }
-            QTreeWidgetItem * subparent_item = 0;
+            QTreeWidgetItem * subparent_item = nullptr;
             if (from < 0) {
                 createChildTreeItem(parent_item, keys.at(i), folder, false);
                 continue;
@@ -740,7 +740,7 @@ void AbstractSyncPage::analyseTreeItemClicked(QTreeWidgetItem * item, int column
     else data0 << "unchecked";
     item->setData(0, Qt::UserRole, QVariant(data0));
     QString rel_path = data0.at(0);
-    QFileInfo * file_info = 0;
+    QFileInfo * file_info = nullptr;
     QStringList s_folders_list = currentSyncFoldersList();
     if (is_checked) {
         for (int e = 0; e < exts_blacklist.count(); ++e) {
@@ -804,7 +804,7 @@ void AbstractSyncPage::checkAnalyseTree()
 void AbstractSyncPage::subCheckAnalyseTree(QTreeWidgetItem * parent_item)
 {
     QTreeWidgetItem * child_item;
-    QFileInfo * file_info = 0;
+    QFileInfo * file_info = nullptr;
     QStringList data0;
     QStringList s_folders_list = currentSyncFoldersList();
     for (int i = 0; i < parent_item->childCount(); ++i) {
@@ -961,7 +961,7 @@ void SyncPage::syncCurrentAnalyseItem()
     QTreeWidgetItem * item = analyse_tree->currentItem();
     MTMap<QString, int> folders;
     MTStringSet rel_paths;
-    MTFileInfo * file_info = 0;
+    MTFileInfo * file_info = nullptr;
     leaveAnalyse();
     bool is_dir = false;
     QString rel_path = item->data(0, Qt::UserRole).toStringList().first();
@@ -1031,7 +1031,7 @@ void AbstractSyncPage::deleteCurrentAnalyseItem()
     QMessageBox msgBox; msgBox.setText(tr("Are you sure you want to remove \"%1\" from every synced location?").arg(item->text(0)));
     msgBox.setWindowTitle(QString("Synkron")); msgBox.setIcon(QMessageBox::Question);
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    QFileInfo * file_info = 0;
+    QFileInfo * file_info = nullptr;
     bool backup = true;
     bool sub_backup = true;
     QStringList s_folders_list = currentSyncFoldersList();
@@ -1076,7 +1076,7 @@ void AbstractSyncPage::renameCurrentAnalyseItem()
     bool ok = false;
     QStringList s_folders_list = currentSyncFoldersList();
     QString rel_path = item->data(0, Qt::UserRole).toStringList().first();
-    QFileInfo * file_info = 0;
+    QFileInfo * file_info = nullptr;
     for (int i = 0; i < s_folders_list.count(); ++i) {
         //file_info = new QFileInfo (item->data(i+1, Qt::UserRole).toString());
         file_info = new MTFileInfo (QDir(s_folders_list.at(i)).absoluteFilePath(rel_path));
